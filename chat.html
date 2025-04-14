@@ -18,17 +18,22 @@
 
   <div id="chatBox"></div>
 
-  <script>
-    async function sendMessage() {
-      const userMessage = document.getElementById('userInput').value;
-      const chatBox = document.getElementById('chatBox');
-      chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
-      document.getElementById('userInput').value = "";
+<script>
+  async function sendMessage() {
+    const userMessage = document.getElementById('userInput').value;
+    const chatBox = document.getElementById('chatBox');
+    chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+    document.getElementById('userInput').value = "";
 
-      // Mock response for now
-      const reply = "This is a placeholder response from AI.";
-      chatBox.innerHTML += `<p><strong>Bot:</strong> ${reply}</p>`;
-    }
-  </script>
+    const response = await fetch("https://your-replit-url/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: userMessage })
+    });
+
+    const data = await response.json();
+    chatBox.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
+  }
+</script>
 </body>
 </html>
