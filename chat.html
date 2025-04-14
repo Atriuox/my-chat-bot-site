@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Chat</title>
+  <meta charset="UTF-8">
+  <title>Chat with GPT</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #chatBox { margin-top: 20px; max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; }
-    input, button { padding: 10px; margin-top: 10px; width: 100%; }
+    body { font-family: sans-serif; max-width: 600px; margin: 20px auto; }
+    #chatBox { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; margin-bottom: 10px; }
+    input[type="text"] { width: 80%; padding: 10px; }
+    button { padding: 10px 20px; }
   </style>
 </head>
 <body>
-  <h2>💬 Chat with AI</h2>
-
-  <input type="text" id="userInput" placeholder="Type your message..." />
+  <h1>GPT Chatbot</h1>
+  <div id="chatBox"></div>
+  <input type="text" id="userInput" placeholder="Type your message here..." />
   <button onclick="sendMessage()">Send</button>
 
-  <div id="chatBox"></div>
+  <script>
+    async function sendMessage() {
+      const userInput = document.getElementById("userInput").value.trim();
+      if (!userInput) return;
 
-<script>
-  async function sendMessage() {
-    const userMessage = document.getElementById('userInput').value;
-    const chatBox = document.getElementById('chatBox');
-    chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
-    document.getElementById('userInput').value = "";
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
 
-    const response = await fetch("https://0a5f0be9-cbcd-4437-bfe6-b63333755393-00-3b55we6l2wboo.pike.replit.dev/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMessage })
-    });
+      document.getElementById("userInput").value = "";
 
-    const data = await response.json();
-    chatBox.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
-  }
-</script>
+      const response = await fetch("https://0a5f0be9-cbcd-4437-bfe6-b63333755393-00-3b55we6l2wboo.pike.replit.dev/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userInput })
+      });
+
+      const data = await response.json();
+      chatBox.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
 </body>
 </html>
